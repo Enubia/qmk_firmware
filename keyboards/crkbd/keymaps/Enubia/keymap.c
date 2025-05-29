@@ -19,14 +19,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 enum layer_names {
-    BASE,
-    // EMPTY,
-    // EMPTY,
-    SYMBOL,
-    NAVIGATION,
-    NUMBERS,
-    MEDIA,
-    FUNCTION
+    _BASE,
+    _GAMING,
+    // _EMPTY,
+    _SYMBOL,
+    _NAVIGATION,
+    _NUMBERS,
+    _MEDIA,
+    _FUNCTION
 };
 
 // enum layer_toggles {
@@ -51,12 +51,12 @@ enum other_mods {
 };
 
 enum thumb_cluster_mods {
-    ESC_MD = LT(MEDIA, KC_ESC),
-    BCSP_NAV = LT(NAVIGATION, KC_BSPC),
-    // TAB_MS = LT(EMPTY, KC_TAB),
-    ENT_SYM = LT(SYMBOL, KC_ENT),
-    SPC_NUM = LT(NUMBERS, KC_SPACE),
-    DEL_FUN = LT(FUNCTION, KC_DELETE),
+    ESC_MD = LT(_MEDIA, KC_ESC),
+    BCSP_NAV = LT(_NAVIGATION, KC_BSPC),
+    // TAB_MS = LT(_EMPTY, KC_TAB),
+    ENT_SYM = LT(_SYMBOL, KC_ENT),
+    SPC_NUM = LT(_NUMBERS, KC_SPACE),
+    DEL_FUN = LT(_FUNCTION, KC_DELETE),
 };
 
 enum shifted_keys {
@@ -83,6 +83,11 @@ enum shifted_keys {
     QUESTION = S(KC_SLASH)
 };
 
+enum permanent_base_layers {
+    BASE = PDF(_BASE),
+    GAMING = PDF(_GAMING)
+};
+
 enum media_keys {
     VOL_UP = KC_KB_VOLUME_UP,
     VOL_DWN = KC_KB_VOLUME_DOWN,
@@ -100,9 +105,9 @@ enum combo_events {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [BASE] = LAYOUT_split_3x6_3_ex2(
+    [_BASE] = LAYOUT_split_3x6_3_ex2(
         //|-----------------------------------------------------|                    |-----------------------------------------------------|
-            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , XXXXXXX,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , GAMING ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  , XXXXXXX,   XXXXXXX,   KC_H  ,  RSFT_J,  RCTL_K,  RALT_L, RGU_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -112,7 +117,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-    // [EMPTY] = LAYOUT_split_3x6_3_ex2(
+    [_GAMING] = LAYOUT_split_3x6_3_ex2(
+        //|-----------------------------------------------------|                    |-----------------------------------------------------|
+            KC_ESC ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   BASE ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,                      _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                KC_GRV ,KC_SPACE, XXXXXXX,    _______, _______, _______
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
+
+    // [_EMPTY] = LAYOUT_split_3x6_3_ex2(
     //     //|-----------------------------------------------------|                    |-----------------------------------------------------|
     //         _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
     //     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -124,19 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //     //                                    |--------+--------+--------|  |--------+--------+--------|
     // ),
 
-    // [EMPTY] = LAYOUT_split_3x6_3_ex2(
-    //     //|-----------------------------------------------------|                    |-----------------------------------------------------|
-    //         _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
-    //     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    //         _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
-    //     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    //         _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-    //     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-    //                                             _______, _______, _______,    _______, _______, _______
-    //     //                                    |--------+--------+--------|  |--------+--------+--------|
-    // ),
-
-    [SYMBOL] = LAYOUT_split_3x6_3_ex2(
+    [_SYMBOL] = LAYOUT_split_3x6_3_ex2(
         //|-----------------------------------------------------|                    |-----------------------------------------------------|
             _______, LCURLY ,  AMPER ,  ASTER ,  LPRN  , RCURLY , XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -148,7 +153,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-    [NAVIGATION] = LAYOUT_split_3x6_3_ex2(
+    [_NAVIGATION] = LAYOUT_split_3x6_3_ex2(
         //|-----------------------------------------------------|                    |-----------------------------------------------------|
             _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX, KC_AGAIN,KC_PASTE, KC_COPY, KC_CUT , KC_UNDO, KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -160,7 +165,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-    [NUMBERS] = LAYOUT_split_3x6_3_ex2(
+    [_NUMBERS] = LAYOUT_split_3x6_3_ex2(
         //|-----------------------------------------------------|                    |-----------------------------------------------------|
             _______, KC_LBRC,  KC_7  ,  KC_8  ,  KC_9  , KC_RBRC, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -173,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
 
-    [MEDIA] = LAYOUT_split_3x6_3_ex2(
+    [_MEDIA] = LAYOUT_split_3x6_3_ex2(
         //|-----------------------------------------------------|                    |-----------------------------------------------------|
             _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX,  _______, _______, TGL_MT , TGL_DFN, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -186,7 +191,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
 
-    [FUNCTION] = LAYOUT_split_3x6_3_ex2(
+    [_FUNCTION] = LAYOUT_split_3x6_3_ex2(
         //|-----------------------------------------------------|                    |-----------------------------------------------------|
             _______,  KC_F9 , KC_F10 , KC_F11 , KC_F12 , _______, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -228,9 +233,9 @@ combo_t key_combos[] = {
 const rgblight_segment_t PROGMEM base_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_BLUE}
 );
-// const rgblight_segment_t PROGMEM empty_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-//     {0, RGBLIGHT_LED_COUNT, HSV_WHITE}
-// );
+const rgblight_segment_t PROGMEM gaming_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLIGHT_LED_COUNT, HSV_RED}
+);
 // const rgblight_segment_t PROGMEM empty_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 //     {0, RGBLIGHT_LED_COUNT, HSV_GREEN}
 // );
@@ -238,7 +243,7 @@ const rgblight_segment_t PROGMEM sym_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_PURPLE}
 );
 const rgblight_segment_t PROGMEM nav_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, RGBLIGHT_LED_COUNT, HSV_CORAL}
+    {0, RGBLIGHT_LED_COUNT, HSV_GOLD}
 );
 const rgblight_segment_t PROGMEM num_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_YELLOW}
@@ -252,7 +257,7 @@ const rgblight_segment_t PROGMEM fun_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     base_layer,
-    // empty_layer,
+    gaming_layer,
     // empty_layer,
     sym_layer,
     nav_layer,
@@ -263,38 +268,49 @@ const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
 
 void keyboard_post_init_user(void) {
     rgblight_layers = rgb_layers;
-
-    // Default to BASE layer color
-    rgblight_sethsv(HSV_BLUE);
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
 };
 
-layer_state_t layer_state_set_user(layer_state_t state) {
+layer_state_t default_layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
-        case BASE:
+        case _BASE:
             rgblight_sethsv(HSV_BLUE);
             break;
-        // case EMPTY:
-        //     rgblight_sethsv(HSV_WHITE);
-        //     break;
-        // case EMPTY:
-        //     rgblight_sethsv(HSV_GREEN);
-        //     break;
-        case SYMBOL:
+        case _GAMING:
+            rgblight_sethsv(HSV_GREEN);
+            break;
+    }
+    return state;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    uint8_t highest_layer = get_highest_layer(state);
+
+    switch (highest_layer) {
+        case _BASE:
+        case _GAMING:
+            // Check which base layer is the default
+            if (biton32(default_layer_state) == _GAMING) {
+                rgblight_sethsv(HSV_GREEN);
+            } else {
+                rgblight_sethsv(HSV_BLUE);
+            }
+            break;
+        case _SYMBOL:
             rgblight_sethsv(HSV_PURPLE);
             break;
-        case NAVIGATION:
-            rgblight_sethsv(HSV_CORAL);
+        case _NAVIGATION:
+            rgblight_sethsv(HSV_GOLD);
             break;
-        case NUMBERS:
+        case _NUMBERS:
             rgblight_sethsv(HSV_YELLOW);
             break;
-        case MEDIA:
+        case _MEDIA:
             rgblight_sethsv(HSV_CYAN);
             break;
-        case FUNCTION:
+        case _FUNCTION:
             rgblight_sethsv(HSV_MAGENTA);
             break;
+
+        };
+        return state;
     };
-    return state;
-};
