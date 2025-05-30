@@ -104,6 +104,10 @@ enum combo_events {
     COMBO_LENGTH
 };
 
+enum custom_keycodes {
+    TAB_TGGL = SAFE_RANGE,
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_split_3x6_3_ex2(
         //|-----------------------------------------------------|                    |-----------------------------------------------------|
@@ -113,7 +117,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
+                                                ESC_MD ,BCSP_NAV,TAB_TGGL,    ENT_SYM, SPC_NUM, DEL_FUN
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
@@ -125,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,                      _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                KC_GRV ,KC_SPACE, XXXXXXX,    _______, _______, _______
+                                                KC_GRV ,KC_SPACE,TAB_TGGL,    _______, _______, _______
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
@@ -268,7 +272,40 @@ const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
 
 void keyboard_post_init_user(void) {
     rgblight_layers = rgb_layers;
+
+    // Default to BASE layer color
+    rgblight_sethsv(HSV_BLUE);
+    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static uint16_t tab_toggle_timer;
+
+    switch (keycode) {
+        case TAB_TGGL:
+            if (record->event.pressed) {
+                tab_toggle_timer = timer_read();
+            } else {
+                if (timer_elapsed(tab_toggle_timer) < TAPPING_TERM) {
+                    tap_code(KC_TAB);
+                } else {
+                    if (biton32(default_layer_state) == _BASE) {
+                        default_layer_set(1UL << _GAMING);
+                        rgblight_sethsv(HSV_GREEN);
+                    } else {
+                        default_layer_set(1UL << _BASE);
+                        rgblight_sethsv(HSV_BLUE);
+                    }
+                    rgblight_mode_noeeprom(RGBLIGHT_MODE_BREATHING + 1);
+                    wait_ms(300);
+                    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+                }
+            }
+            return false;
+        default:
+            return true;
+    }
+}
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
