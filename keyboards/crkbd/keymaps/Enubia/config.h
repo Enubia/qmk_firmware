@@ -45,13 +45,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define COMBO_TERM_PER_COMBO
 
-// changes save action depending on the operating system
-#ifdef __APPLE__
-    #define KC_SAVE LGUI(KC_S)
-#else
-    #define KC_SAVE LCTL(KC_S)
-#endif
-
 #ifdef RGBLIGHT_ENABLE
 #    undef RGBLIGHT_LED_COUNT
 #    define RGBLIGHT_LED_COUNT 46

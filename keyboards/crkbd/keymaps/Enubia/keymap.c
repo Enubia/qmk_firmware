@@ -18,10 +18,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
+// Define OS-specific modifiers
+#ifdef __APPLE__
+    // Mac - GUI on outer keys, CTRL on inner keys
+    #define MOD_OUTER_LEFT LGUI_T
+    #define MOD_INNER_LEFT LCTL_T
+    #define MOD_OUTER_RIGHT RGUI_T
+    #define MOD_INNER_RIGHT RCTL_T
+#else
+    // Windows/Linux - CTRL on outer keys, GUI on inner keys
+    #define MOD_OUTER_LEFT LCTL_T
+    #define MOD_INNER_LEFT LGUI_T
+    #define MOD_OUTER_RIGHT LCTL_T
+    #define MOD_INNER_RIGHT RGUI_T
+#endif
+
+// changes save action depending on the operating system
+#ifdef __APPLE__
+    #define KC_SAVE LGUI(KC_S)
+#else
+    #define KC_SAVE LCTL(KC_S)
+#endif
+
 enum layer_names {
     _BASE,
     _GAMING,
-    // _EMPTY,
     _SYMBOL,
     _NAVIGATION,
     _NUMBERS,
@@ -29,21 +50,16 @@ enum layer_names {
     _FUNCTION
 };
 
-// enum layer_toggles {
-//     Z_BTN = LT(BUTTON, KC_Z),
-//     FW_BTN = LT(BUTTON, KC_SLASH),
-// };
-
 enum home_row_mods {
     LSFT_F = LSFT_T(KC_F),
-    LCTL_D = LCTL_T(KC_D),
+    LMOD_D = MOD_OUTER_LEFT(KC_D),
     LALT_S = LALT_T(KC_S),
-    LGUI_A = LGUI_T(KC_A),
+    LMOD_A = MOD_INNER_LEFT(KC_A),
 
     RSFT_J = RSFT_T(KC_J),
-    RCTL_K = RCTL_T(KC_K),
+    RMOD_K = MOD_OUTER_RIGHT(KC_K),
     RALT_L = RALT_T(KC_L),
-    RGU_SEM = RGUI_T(KC_SEMICOLON),
+    RMOD_SEM = MOD_INNER_RIGHT(KC_SEMICOLON),
 };
 
 enum other_mods {
@@ -110,10 +126,10 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_split_3x6_3_ex2(
-        //|-----------------------------------------------------|                    |-----------------------------------------------------|
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , GAMING ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  , XXXXXXX,   XXXXXXX,   KC_H  ,  RSFT_J,  RCTL_K,  RALT_L, RGU_SEM, KC_QUOT,
+            KC_ESC , LMOD_A , LALT_S , LMOD_D , LSFT_F ,  KC_G  , XXXXXXX,   XXXXXXX,   KC_H  ,  RSFT_J,  RMOD_K,  RALT_L,RMOD_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -122,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_GAMING] = LAYOUT_split_3x6_3_ex2(
-        //|-----------------------------------------------------|                    |-----------------------------------------------------|
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_ESC ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   BASE ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
@@ -133,20 +149,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-    // [_EMPTY] = LAYOUT_split_3x6_3_ex2(
-    //     //|-----------------------------------------------------|                    |-----------------------------------------------------|
-    //         _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
-    //     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    //         _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
-    //     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    //         _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-    //     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-    //                                             _______, _______, _______,    _______, _______, _______
-    //     //                                    |--------+--------+--------|  |--------+--------+--------|
-    // ),
-
     [_SYMBOL] = LAYOUT_split_3x6_3_ex2(
-        //|-----------------------------------------------------|                    |-----------------------------------------------------|
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, LCURLY ,  AMPER ,  ASTER ,  LPRN  , RCURLY , XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______,  COLON ,   DLR  ,   PERC ,  CIRC  ,  PLUS  , XXXXXXX,   XXXXXXX,  _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
@@ -158,7 +162,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_NAVIGATION] = LAYOUT_split_3x6_3_ex2(
-        //|-----------------------------------------------------|                    |-----------------------------------------------------|
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX, KC_AGAIN,KC_PASTE, KC_COPY, KC_CUT , KC_UNDO, KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LCTL, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______, XXXXXXX,   XXXXXXX,  _______, KC_LEFT, KC_DOWN,  KC_UP ,KC_RIGHT, KC_EQL ,
@@ -170,7 +174,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_NUMBERS] = LAYOUT_split_3x6_3_ex2(
-        //|-----------------------------------------------------|                    |-----------------------------------------------------|
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, KC_LBRC,  KC_7  ,  KC_8  ,  KC_9  , KC_RBRC, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, KC_SCLN,  KC_4  ,  KC_5  ,  KC_6  , KC_EQL , XXXXXXX,   XXXXXXX,  _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
@@ -181,9 +185,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-
     [_MEDIA] = LAYOUT_split_3x6_3_ex2(
-        //|-----------------------------------------------------|                    |-----------------------------------------------------|
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, _______, _______, _______, _______, _______, XXXXXXX,   XXXXXXX,  _______, _______, TGL_MT , TGL_DFN, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______, XXXXXXX,   XXXXXXX,  _______, KC_MPRV, KC_MPLY, KC_MSTP, KC_MNXT, _______,
@@ -194,9 +197,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-
     [_FUNCTION] = LAYOUT_split_3x6_3_ex2(
-        //|-----------------------------------------------------|                    |-----------------------------------------------------|
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______,  KC_F9 , KC_F10 , KC_F11 , KC_F12 , _______, XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______,  KC_F5 ,  KC_F6 ,  KC_F7 ,  KC_F8 , _______, XXXXXXX,   XXXXXXX,  _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
@@ -211,13 +213,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_F:
-        case LCTL_D:
+        case LMOD_D:
         case LALT_S:
-        case LGUI_A:
+        case LMOD_A:
         case RSFT_J:
-        case RCTL_K:
+        case RMOD_K:
         case RALT_L:
-        case RGU_SEM:
+        case RMOD_SEM:
             return TAPPING_TERM + 70;
         default:
             return TAPPING_TERM;
@@ -240,9 +242,6 @@ const rgblight_segment_t PROGMEM base_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t PROGMEM gaming_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_RED}
 );
-// const rgblight_segment_t PROGMEM empty_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-//     {0, RGBLIGHT_LED_COUNT, HSV_GREEN}
-// );
 const rgblight_segment_t PROGMEM sym_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_PURPLE}
 );
@@ -262,7 +261,6 @@ const rgblight_segment_t PROGMEM fun_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     base_layer,
     gaming_layer,
-    // empty_layer,
     sym_layer,
     nav_layer,
     num_layer,
@@ -296,12 +294,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         default_layer_set(1UL << _BASE);
                         rgblight_sethsv(HSV_BLUE);
                     }
-                    rgblight_mode_noeeprom(RGBLIGHT_MODE_BREATHING + 1);
-                    wait_ms(300);
-                    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
                 }
             }
             return false;
+
         default:
             return true;
     }
@@ -316,6 +312,7 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_GREEN);
             break;
     }
+
     return state;
 }
 
@@ -347,7 +344,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case _FUNCTION:
             rgblight_sethsv(HSV_MAGENTA);
             break;
-
-        };
-        return state;
     };
+
+    return state;
+};
