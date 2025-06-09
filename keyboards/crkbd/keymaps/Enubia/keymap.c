@@ -64,6 +64,7 @@ enum home_row_mods {
 
 enum other_mods {
     RE_SHFT = RSFT_T(KC_ENT),
+    LALT_TAB = LALT_T(KC_TAB)
 };
 
 enum thumb_cluster_mods {
@@ -133,19 +134,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                ESC_MD ,BCSP_NAV,TAB_TGGL,    ENT_SYM, SPC_NUM, DEL_FUN
+                                                ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
     [_GAMING] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   BASE ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
+            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   BASE ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
+            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            _______,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,                      _______, _______, _______, _______, _______, _______,
+            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                      _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                KC_GRV ,KC_SPACE,TAB_TGGL,    _______, _______, _______
+                                                KC_LCTL,KC_SPACE,LALT_TAB,    _______, _______, _______
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
@@ -284,7 +285,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 tab_toggle_timer = timer_read();
             } else {
-                if (timer_elapsed(tab_toggle_timer) < TAPPING_TERM) {
+                if (timer_elapsed(tab_toggle_timer) < (TAPPING_TERM + 50)) {
                     tap_code(KC_TAB);
                 } else {
                     if (biton32(default_layer_state) == _BASE) {
