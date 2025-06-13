@@ -8,4 +8,4 @@ EXTRAKEY_ENABLE     = yes
 
 COMBO_ENABLE        = yes
 
-EXTRAFLAGS 			+= -flto
+# EXTRAFLAGS 			+= -flto
