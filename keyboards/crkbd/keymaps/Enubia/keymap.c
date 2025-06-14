@@ -18,21 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-// Define OS-specific modifiers
-#ifdef __APPLE__
-    // Mac - GUI on outer keys, CTRL on inner keys
-    #define MOD_OUTER_LEFT LGUI_T
-    #define MOD_INNER_LEFT LCTL_T
-    #define MOD_OUTER_RIGHT RGUI_T
-    #define MOD_INNER_RIGHT RCTL_T
-#else
-    // Windows/Linux - CTRL on outer keys, GUI on inner keys
-    #define MOD_OUTER_LEFT LCTL_T
-    #define MOD_INNER_LEFT LGUI_T
-    #define MOD_OUTER_RIGHT LCTL_T
-    #define MOD_INNER_RIGHT RGUI_T
-#endif
-
 // changes save action depending on the operating system
 #ifdef __APPLE__
     #define KC_SAVE LGUI(KC_S)
@@ -41,8 +26,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 enum layer_names {
-    _BASE,
-    _GAMING,
+    _MAC,
+    _WIN,
+    _POE,
     _SYMBOL,
     _NAVIGATION,
     _NUMBERS,
@@ -52,14 +38,21 @@ enum layer_names {
 
 enum home_row_mods {
     LSFT_F = LSFT_T(KC_F),
-    LMOD_D = MOD_OUTER_LEFT(KC_D),
+    LCTL_D = LCTL_T(KC_D),
     LALT_S = LALT_T(KC_S),
-    LMOD_A = MOD_INNER_LEFT(KC_A),
+    LGUI_A = LGUI_T(KC_A),
 
     RSFT_J = RSFT_T(KC_J),
-    RMOD_K = MOD_OUTER_RIGHT(KC_K),
+    RCTL_K = RCTL_T(KC_K),
     RALT_L = RALT_T(KC_L),
-    RMOD_SEM = MOD_INNER_RIGHT(KC_SEMICOLON),
+    RGUI_SEM = RGUI_T(KC_SEMICOLON),
+
+    // windows swaps
+    LCTL_A = LCTL_T(KC_A),
+    LGUI_D = LGUI_T(KC_D),
+
+    RGUI_K = RGUI_T(KC_K),
+    RCTL_SEM = RCTL_T(KC_SEMICOLON),
 };
 
 enum other_mods {
@@ -100,9 +93,10 @@ enum shifted_keys {
     QUESTION = S(KC_SLASH)
 };
 
-enum permanent_base_layers {
-    BASE = PDF(_BASE),
-    GAMING = PDF(_GAMING)
+enum permanent_layers {
+    MAC = PDF(_MAC),
+    WIN = PDF(_WIN),
+    POE = PDF(_POE)
 };
 
 enum media_keys {
@@ -121,16 +115,12 @@ enum combo_events {
     COMBO_LENGTH
 };
 
-enum custom_keycodes {
-    TAB_TGGL = SAFE_RANGE,
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_BASE] = LAYOUT_split_3x6_3_ex2(
+    [_MAC] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , GAMING ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC , LMOD_A , LALT_S , LMOD_D , LSFT_F ,  KC_G  , XXXXXXX,   XXXXXXX,   KC_H  ,  RSFT_J,  RMOD_K,  RALT_L,RMOD_SEM, KC_QUOT,
+            KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  ,   WIN  ,   XXXXXXX,   KC_H  ,  RSFT_J,  RCTL_K,  RALT_L,RGUI_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -138,13 +128,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-    [_GAMING] = LAYOUT_split_3x6_3_ex2(
+    [_WIN] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   BASE ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , XXXXXXX,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
+            KC_ESC , LCTL_A , LALT_S , LGUI_D , LSFT_F ,  KC_G  ,   MAC  ,   XXXXXXX,   KC_H  ,  RSFT_J,  RGUI_K,  RALT_L,RCTL_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                      _______, _______, _______, _______, _______, _______,
+            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
+
+    [_POE] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   WIN  ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   MAC  ,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_LSFT,  KC_G  ,  KC_P  ,  KC_C  ,  KC_V  ,  KC_O  ,                      _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 KC_LCTL,KC_SPACE,LALT_TAB,    _______, _______, _______
         //                                    |--------+--------+--------|  |--------+--------+--------|
@@ -214,13 +216,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_F:
-        case LMOD_D:
+        case LGUI_D:
         case LALT_S:
-        case LMOD_A:
+        case LGUI_A:
         case RSFT_J:
-        case RMOD_K:
+        case RCTL_K:
         case RALT_L:
-        case RMOD_SEM:
+        case RGUI_SEM:
             return TAPPING_TERM + 70;
         default:
             return TAPPING_TERM;
@@ -237,17 +239,20 @@ combo_t key_combos[] = {
     [AS_SAVE] = COMBO(as_combo, KC_SAVE),
 };
 
-const rgblight_segment_t PROGMEM base_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+const rgblight_segment_t PROGMEM mac_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_BLUE}
 );
-const rgblight_segment_t PROGMEM gaming_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+const rgblight_segment_t PROGMEM win_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_RED}
+);
+const rgblight_segment_t PROGMEM poe_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLIGHT_LED_COUNT, HSV_GREEN}
 );
 const rgblight_segment_t PROGMEM sym_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_PURPLE}
 );
 const rgblight_segment_t PROGMEM nav_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, RGBLIGHT_LED_COUNT, HSV_GOLD}
+    {0, RGBLIGHT_LED_COUNT, HSV_PINK}
 );
 const rgblight_segment_t PROGMEM num_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_YELLOW}
@@ -260,8 +265,9 @@ const rgblight_segment_t PROGMEM fun_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 );
 
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    base_layer,
-    gaming_layer,
+    mac_layer,
+    win_layer,
+    poe_layer,
     sym_layer,
     nav_layer,
     num_layer,
@@ -272,44 +278,20 @@ const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
 void keyboard_post_init_user(void) {
     rgblight_layers = rgb_layers;
 
-    // Default to BASE layer color
+    // Default to MAC layer color
     rgblight_sethsv(HSV_BLUE);
     rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    static uint16_t tab_toggle_timer;
-
-    switch (keycode) {
-        case TAB_TGGL:
-            if (record->event.pressed) {
-                tab_toggle_timer = timer_read();
-            } else {
-                if (timer_elapsed(tab_toggle_timer) < (TAPPING_TERM + 50)) {
-                    tap_code(KC_TAB);
-                } else {
-                    if (biton32(default_layer_state) == _BASE) {
-                        default_layer_set(1UL << _GAMING);
-                        rgblight_sethsv(HSV_GREEN);
-                    } else {
-                        default_layer_set(1UL << _BASE);
-                        rgblight_sethsv(HSV_BLUE);
-                    }
-                }
-            }
-            return false;
-
-        default:
-            return true;
-    }
-}
-
 layer_state_t default_layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
-        case _BASE:
+        case _MAC:
             rgblight_sethsv(HSV_BLUE);
             break;
-        case _GAMING:
+        case _WIN:
+            rgblight_sethsv(HSV_RED);
+            break;
+        case _POE:
             rgblight_sethsv(HSV_GREEN);
             break;
     }
@@ -321,11 +303,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);
 
     switch (highest_layer) {
-        case _BASE:
-        case _GAMING:
+        case _MAC:
+        case _WIN:
+        case _POE:
             // Check which base layer is the default
-            if (biton32(default_layer_state) == _GAMING) {
+            if (biton32(default_layer_state) == _POE) {
                 rgblight_sethsv(HSV_GREEN);
+            } else if (biton32(default_layer_state) == _WIN) {
+                rgblight_sethsv(HSV_RED);
             } else {
                 rgblight_sethsv(HSV_BLUE);
             }
@@ -334,7 +319,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_PURPLE);
             break;
         case _NAVIGATION:
-            rgblight_sethsv(HSV_GOLD);
+            rgblight_sethsv(HSV_PINK);
             break;
         case _NUMBERS:
             rgblight_sethsv(HSV_YELLOW);
