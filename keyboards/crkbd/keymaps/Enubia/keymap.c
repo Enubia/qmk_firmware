@@ -334,3 +334,26 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     return state;
 };
+
+bool process_detected_host_os_kb(os_variant_t detected_os) {
+    if (!process_detected_host_os_user(detected_os)) {
+        return false;
+    }
+
+    switch (detected_os) {
+        case OS_MACOS:
+            set_single_persistent_default_layer(_MAC);
+            rgblight_sethsv(HSV_BLUE);
+            break;
+        case OS_WINDOWS:
+            set_single_persistent_default_layer(_WIN);
+            rgblight_sethsv(HSV_RED);
+            break;
+        case OS_UNSURE:
+        case OS_LINUX:
+        case OS_IOS:
+            break;
+    }
+
+    return true;
+}
