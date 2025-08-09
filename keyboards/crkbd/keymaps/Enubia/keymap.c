@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum layer_names {
     _MAC,
-    _WIN,
+    _LINUX,
     _POE,
     _SYMBOL,
     _NAVIGATION,
@@ -95,7 +95,7 @@ enum shifted_keys {
 
 enum permanent_layers {
     MAC = PDF(_MAC),
-    WIN = PDF(_WIN),
+    LIN = PDF(_LINUX),
     POE = PDF(_POE)
 };
 
@@ -120,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  ,   WIN  ,   XXXXXXX,   KC_H  ,  RSFT_J,  RCTL_K,  RALT_L,RGUI_SEM, KC_QUOT,
+            KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  ,   LIN  ,   XXXXXXX,   KC_H  ,  RSFT_J,  RCTL_K,  RALT_L,RGUI_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -128,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-    [_WIN] = LAYOUT_split_3x6_3_ex2(
+    [_LINUX] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -137,18 +137,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
-        //                                    |--------+--------+--------|  |--------+--------+--------|
-    ),
-
-    [_POE] = LAYOUT_split_3x6_3_ex2(
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   WIN  ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   MAC  ,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_LSFT,  KC_G  ,  KC_P  ,  KC_C  ,  KC_I  ,  KC_O  ,                      _______, _______, _______, _______, _______, _______,
-        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                KC_LCTL,KC_SPACE,LALT_TAB,    _______, _______, _______
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
@@ -209,6 +197,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             _______,  KC_F1 ,  KC_F2 ,  KC_F3 ,  KC_F4 , _______,                      _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 _______,KC_SPACE, KC_TAB ,    _______, _______, _______
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
+
+    // games layers
+
+    [_POE] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   LIN  ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   MAC  ,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_LSFT,  KC_G  ,  KC_P  ,  KC_C  ,  KC_I  ,  KC_O  ,                      _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                KC_LCTL,KC_SPACE,LALT_TAB,    _______, _______, _______
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 };
@@ -288,8 +290,8 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
         case _MAC:
             rgblight_sethsv(HSV_BLUE);
             break;
-        case _WIN:
-            rgblight_sethsv(HSV_RED);
+        case _LINUX:
+            rgblight_sethsv(HSV_WHITE);
             break;
         case _POE:
             rgblight_sethsv(HSV_GREEN);
@@ -304,13 +306,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     switch (highest_layer) {
         case _MAC:
-        case _WIN:
+        case _LINUX:
         case _POE:
             // Check which base layer is the default
             if (biton32(default_layer_state) == _POE) {
                 rgblight_sethsv(HSV_GREEN);
-            } else if (biton32(default_layer_state) == _WIN) {
-                rgblight_sethsv(HSV_RED);
+            } else if (biton32(default_layer_state) == _LINUX) {
+                rgblight_sethsv(HSV_WHITE);
             } else {
                 rgblight_sethsv(HSV_BLUE);
             }
@@ -345,12 +347,12 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
             set_single_persistent_default_layer(_MAC);
             rgblight_sethsv(HSV_BLUE);
             break;
+        case OS_LINUX:
         case OS_WINDOWS:
-            set_single_persistent_default_layer(_WIN);
-            rgblight_sethsv(HSV_RED);
+            set_single_persistent_default_layer(_LINUX);
+            rgblight_sethsv(HSV_WHITE);
             break;
         case OS_UNSURE:
-        case OS_LINUX:
         case OS_IOS:
             break;
     }
