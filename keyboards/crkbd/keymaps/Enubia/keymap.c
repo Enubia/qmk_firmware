@@ -27,13 +27,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum layer_names {
     _BASE,
+    // games layers
+    _POE,
+    // other layers
     _SYMBOL,
     _NAVIGATION,
     _NUMBERS,
     _MEDIA,
-    _FUNCTION,
-    // games layers
-    _POE
+    _FUNCTION
 };
 
 enum home_row_mods {
@@ -115,6 +116,7 @@ enum combo_events {
 };
 
 // gui and ctrl are swapped on macOS
+// ORDER IS IMPORTANT, BASE AND POE LAYERS NEED TO BE FIRST SO THAT OTHER LAYERS ARE NOT AFFECTED
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -131,6 +133,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                 ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
+
+    // games layers
+
+    [_POE] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   BASE  ,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , XXXXXXX ,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_LSFT,  KC_G  ,  KC_P  ,  KC_C  ,  KC_I  ,  KC_O  ,                      _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                KC_LCTL,KC_SPACE,LALT_TAB,    _______, _______, _______
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
+
+    // other layers
 
     [_SYMBOL] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -212,20 +230,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                 _______,KC_SPACE, KC_TAB ,    _______, _______, _______
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
-
-    // games layers
-
-    [_POE] = LAYOUT_split_3x6_3_ex2(
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   BASE  ,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  , XXXXXXX ,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_LSFT,  KC_G  ,  KC_P  ,  KC_C  ,  KC_I  ,  KC_O  ,                      _______, _______, _______, _______, _______, _______,
-        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                KC_LCTL,KC_SPACE,LALT_TAB,    _______, _______, _______
-        //                                    |--------+--------+--------|  |--------+--------+--------|
-    ),
 };
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
@@ -257,9 +261,6 @@ combo_t key_combos[] = {
 const rgblight_segment_t PROGMEM base_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_WHITE}
 );
-// const rgblight_segment_t PROGMEM win_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-//     {0, RGBLIGHT_LED_COUNT, HSV_RED}
-// );
 const rgblight_segment_t PROGMEM poe_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_GREEN}
 );
@@ -281,7 +282,6 @@ const rgblight_segment_t PROGMEM fun_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     base_layer,
-    // win_layer,
     poe_layer,
     sym_layer,
     nav_layer,
