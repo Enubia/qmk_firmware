@@ -18,16 +18,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-// changes save action depending on the operating system
-#ifdef __APPLE__
-    #define KC_SAVE LGUI(KC_S)
-#else
-    #define KC_SAVE LCTL(KC_S)
-#endif
-
 enum layer_names {
     _MAC,
-    _LINUX,
+    _WIN,
+    _COLEMAKDH_MAC,
+    _COLEMAKDH_WIN,
     _POE,
     _SYMBOL,
     _NAVIGATION,
@@ -37,10 +32,10 @@ enum layer_names {
 };
 
 enum home_row_mods {
-    LSFT_F = LSFT_T(KC_F),
-    LCTL_D = LCTL_T(KC_D),
-    LALT_S = LALT_T(KC_S),
     LGUI_A = LGUI_T(KC_A),
+    LALT_S = LALT_T(KC_S),
+    LCTL_D = LCTL_T(KC_D),
+    LSFT_F = LSFT_T(KC_F),
 
     RSFT_J = RSFT_T(KC_J),
     RCTL_K = RCTL_T(KC_K),
@@ -53,6 +48,28 @@ enum home_row_mods {
 
     RGUI_K = RGUI_T(KC_K),
     RCTL_SEM = RCTL_T(KC_SEMICOLON),
+
+    // colemak dh swaps mac
+    LGUI_AM = LGUI_T(KC_A),
+    LALT_RM = LALT_T(KC_R),
+    LCTL_SM = LCTL_T(KC_S),
+    LSFT_TM = LSFT_T(KC_T),
+
+    RSFT_NM = RSFT_T(KC_N),
+    RCTL_EM = RCTL_T(KC_E),
+    RALT_IM = RALT_T(KC_I),
+    RGUI_OM = RGUI_T(KC_O),
+
+    // colemak dh swaps windows
+    LCTL_AW = LCTL_T(KC_A),
+    LALT_RW = LALT_T(KC_R),
+    LGUI_SW = LGUI_T(KC_S),
+    LSFT_TW = LSFT_T(KC_T),
+
+    RSFT_NW = RGUI_T(KC_N),
+    RGUI_EW = RGUI_T(KC_E),
+    RALT_IW = RALT_T(KC_I),
+    RCTL_OW = RCTL_T(KC_O),
 };
 
 enum other_mods {
@@ -95,7 +112,9 @@ enum shifted_keys {
 
 enum permanent_layers {
     MAC = PDF(_MAC),
-    LIN = PDF(_LINUX),
+    WIN = PDF(_WIN),
+    COL_MAC = PDF(_COLEMAKDH_MAC),
+    COL_WIN = PDF(_COLEMAKDH_WIN),
     POE = PDF(_POE)
 };
 
@@ -110,31 +129,50 @@ enum discord_keys {
     TGL_DFN = KC_F23,
 };
 
-enum combo_events {
-    AS_SAVE_COMBO,
-    COMBO_LENGTH
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_MAC] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   COL_MAC ,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  ,   LIN  ,   XXXXXXX,   KC_H  ,  RSFT_J,  RCTL_K,  RALT_L,RGUI_SEM, KC_QUOT,
+            KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  ,   WIN  ,   COL_WIN ,   KC_H  ,  RSFT_J,  RCTL_K,  RALT_L,RGUI_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
+            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                        KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
-    [_LINUX] = LAYOUT_split_3x6_3_ex2(
+    [_WIN] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   XXXXXXX,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   COL_MAC ,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC , LCTL_A , LALT_S , LGUI_D , LSFT_F ,  KC_G  ,   MAC  ,   XXXXXXX,   KC_H  ,  RSFT_J,  RGUI_K,  RALT_L,RCTL_SEM, KC_QUOT,
+            KC_ESC , LCTL_A , LALT_S , LGUI_D , LSFT_F ,  KC_G  ,   MAC  ,   COL_WIN ,   KC_H  ,  RSFT_J,  RGUI_K,  RALT_L,RCTL_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
+            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                        KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
+
+    [_COLEMAKDH_MAC] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,   POE  ,   COL_MAC ,   KC_J ,  KC_L  ,  KC_U ,   KC_Y  , KC_SCLN, KC_BSPC,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_ESC , LGUI_AM, LALT_RM, LCTL_SM, LSFT_TM,  KC_G  ,   MAC  ,   COL_WIN ,   KC_M  ,RSFT_NM, RCTL_EM, RALT_IM, RGUI_OM, KC_QUOT,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_D  ,  KC_V  ,                        KC_K ,  KC_H  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
+
+    [_COLEMAKDH_WIN] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,   POE  ,   COL_MAC ,   KC_J ,  KC_L  ,  KC_U ,   KC_Y  , KC_SCLN, KC_BSPC,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_ESC , LCTL_AW, LALT_RW, LGUI_SW, LSFT_TW,  KC_G  ,   WIN  ,   COL_WIN ,   KC_M  ,RSFT_NW, RGUI_EW, RALT_IW, RCTL_OW, KC_QUOT,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_D  ,  KC_V  ,                        KC_K ,  KC_H  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
         //                                    |--------+--------+--------|  |--------+--------+--------|
@@ -204,9 +242,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_POE] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   LIN  ,   XXXXXXX,  _______, _______, _______, _______ , _______, _______,
+            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   WIN  ,   COL_MAC ,  _______, _______, _______, _______ , _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   MAC  ,   XXXXXXX,  _______, _______, _______, _______, _______, _______,
+            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   MAC  ,   COL_WIN ,  _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_G  ,  KC_P  ,  KC_C  ,  KC_I  ,  KC_O  ,                      _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -231,21 +269,17 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-enum combos {
-    AS_SAVE
-};
-
-const uint16_t PROGMEM as_combo[] = {KC_A, KC_S, COMBO_END};
-
-combo_t key_combos[] = {
-    [AS_SAVE] = COMBO(as_combo, KC_SAVE),
-};
-
 const rgblight_segment_t PROGMEM mac_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_BLUE}
 );
-const rgblight_segment_t PROGMEM lin_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+const rgblight_segment_t PROGMEM win_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_RED}
+);
+const rgblight_segment_t PROGMEM colm_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLIGHT_LED_COUNT, HSV_ORANGE}
+);
+const rgblight_segment_t PROGMEM colw_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLIGHT_LED_COUNT, HSV_TEAL}
 );
 const rgblight_segment_t PROGMEM poe_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_GREEN}
@@ -268,7 +302,9 @@ const rgblight_segment_t PROGMEM fun_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     mac_layer,
-    lin_layer,
+    win_layer,
+    colm_layer,
+    colw_layer,
     poe_layer,
     sym_layer,
     nav_layer,
@@ -290,8 +326,14 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
         case _MAC:
             rgblight_sethsv(HSV_WHITE);
             break;
-        case _LINUX:
+        case _WIN:
             rgblight_sethsv(HSV_BLUE);
+            break;
+        case _COLEMAKDH_MAC:
+            rgblight_sethsv(HSV_ORANGE);
+            break;
+        case _COLEMAKDH_WIN:
+            rgblight_sethsv(HSV_TEAL);
             break;
         case _POE:
             rgblight_sethsv(HSV_GREEN);
@@ -306,16 +348,29 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     switch (highest_layer) {
         case _MAC:
-        case _LINUX:
+        case _WIN:
         case _POE:
+        case _COLEMAKDH_MAC:
+        case _COLEMAKDH_WIN:
             // Check which base layer is the default
-            if (biton32(default_layer_state) == _POE) {
-                rgblight_sethsv(HSV_GREEN);
-            } else if (biton32(default_layer_state) == _LINUX) {
-                rgblight_sethsv(HSV_BLUE);
-            } else {
-                rgblight_sethsv(HSV_WHITE);
+            switch (biton32(default_layer_state)) {
+                case _MAC:
+                    rgblight_sethsv(HSV_WHITE);
+                    break;
+                case _WIN:
+                    rgblight_sethsv(HSV_BLUE);
+                    break;
+                case _COLEMAKDH_MAC:
+                    rgblight_sethsv(HSV_ORANGE);
+                    break;
+                case _COLEMAKDH_WIN:
+                    rgblight_sethsv(HSV_TEAL);
+                    break;
+                case _POE:
+                    rgblight_sethsv(HSV_GREEN);
+                    break;
             }
+
             break;
         case _SYMBOL:
             rgblight_sethsv(HSV_PURPLE);
@@ -349,7 +404,7 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
             break;
         case OS_LINUX:
         case OS_WINDOWS:
-            set_single_persistent_default_layer(_LINUX);
+            set_single_persistent_default_layer(_WIN);
             rgblight_sethsv(HSV_BLUE);
             break;
         case OS_UNSURE:
