@@ -6,7 +6,7 @@ RGB_MATRIX_ENABLE   = no
 
 EXTRAKEY_ENABLE     = yes
 
-COMBO_ENABLE        = no
+COMBO_ENABLE        = yes
 
 OS_DETECTION_ENABLE = yes
 
