@@ -129,6 +129,10 @@ enum discord_keys {
     TGL_DFN = KC_F23,
 };
 
+enum combos {
+    COMMA_DOT_SCLN,
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_MAC] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -242,9 +246,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_POE] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   WIN  ,   COL_MAC ,  _______, _______, _______, _______ , _______, _______,
+            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   WIN  ,   COL_MAC , _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   MAC  ,   COL_WIN ,  _______, _______, _______, _______, _______, _______,
+            KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   MAC  ,   COL_WIN , _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_G  ,  KC_P  ,  KC_C  ,  KC_I  ,  KC_O  ,                      _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -312,6 +316,12 @@ const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     media_layer,
     fun_layer
 );
+
+const uint16_t PROGMEM comma_dot_combo[] = {KC_COMM, KC_DOT, COMBO_END};
+
+combo_t key_combos[] = {
+    [COMMA_DOT_SCLN] = COMBO(comma_dot_combo, KC_SCLN)
+};
 
 void keyboard_post_init_user(void) {
     rgblight_layers = rgb_layers;
