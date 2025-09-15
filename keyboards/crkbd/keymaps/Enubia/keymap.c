@@ -24,6 +24,7 @@ enum layer_names {
     _COLEMAKDH_MAC,
     _COLEMAKDH_WIN,
     _POE,
+    _POE2,
     _SYMBOL,
     _NAVIGATION,
     _NUMBERS,
@@ -115,7 +116,8 @@ enum permanent_layers {
     WIN = PDF(_WIN),
     COL_MAC = PDF(_COLEMAKDH_MAC),
     COL_WIN = PDF(_COLEMAKDH_WIN),
-    POE = PDF(_POE)
+    POE = PDF(_POE),
+    POE2 = PDF(_POE2),
 };
 
 enum media_keys {
@@ -136,11 +138,11 @@ enum combos {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_MAC] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   COL_MAC ,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   COL_MAC ,  KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  ,   WIN  ,   COL_WIN ,   KC_H  ,  RSFT_J,  RCTL_K,  RALT_L,RGUI_SEM, KC_QUOT,
+            KC_ESC , LGUI_A , LALT_S , LCTL_D , LSFT_F ,  KC_G  ,   WIN  ,     POE2  ,  KC_H  ,  RSFT_J,  RCTL_K,  RALT_L,RGUI_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                        KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
+            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
         //                                    |--------+--------+--------|  |--------+--------+--------|
@@ -148,11 +150,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_WIN] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   COL_MAC ,   KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
+            KC_TAB ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   COL_MAC ,  KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC , LCTL_A , LALT_S , LGUI_D , LSFT_F ,  KC_G  ,   MAC  ,   COL_WIN ,   KC_H  ,  RSFT_J,  RGUI_K,  RALT_L,RCTL_SEM, KC_QUOT,
+            KC_ESC , LCTL_A , LALT_S , LGUI_D , LSFT_F ,  KC_G  ,   MAC  ,     POE2  ,  KC_H  ,  RSFT_J,  RGUI_K,  RALT_L,RCTL_SEM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                        KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
+            KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 ESC_MD ,BCSP_NAV, KC_TAB ,    ENT_SYM, SPC_NUM, DEL_FUN
         //                                    |--------+--------+--------|  |--------+--------+--------|
@@ -162,7 +164,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_TAB ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,   POE  ,   COL_MAC ,   KC_J ,  KC_L  ,  KC_U ,   KC_Y  , KC_SCLN, KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC , LGUI_AM, LALT_RM, LCTL_SM, LSFT_TM,  KC_G  ,   MAC  ,   COL_WIN ,   KC_M  ,RSFT_NM, RCTL_EM, RALT_IM, RGUI_OM, KC_QUOT,
+            KC_ESC , LGUI_AM, LALT_RM, LCTL_SM, LSFT_TM,  KC_G  ,   MAC  ,   COL_WIN ,   KC_M , RSFT_NM, RCTL_EM, RALT_IM, RGUI_OM, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_D  ,  KC_V  ,                        KC_K ,  KC_H  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -255,6 +257,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                 KC_LCTL,KC_SPACE,LALT_TAB,    _______, _______, _______
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
+
+    [_POE2] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_GRV ,  KC_Q  ,  KC_W ,   KC_E  ,  KC_R  ,  KC_T  ,   WIN  ,   COL_MAC , _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_ESC ,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,   MAC  ,   COL_WIN , _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            KC_LSFT,KC_SLASH,  KC_P  ,  KC_C  ,  KC_I  ,  KC_O  ,                      _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                KC_LCTL,KC_SPACE,LALT_TAB,    _______, _______, _______
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    )
 };
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
@@ -288,6 +302,9 @@ const rgblight_segment_t PROGMEM colw_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t PROGMEM poe_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_GREEN}
 );
+const rgblight_segment_t PROGMEM poe2_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLIGHT_LED_COUNT, HSV_SPRINGGREEN}
+);
 const rgblight_segment_t PROGMEM sym_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_PURPLE}
 );
@@ -310,6 +327,7 @@ const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     colm_layer,
     colw_layer,
     poe_layer,
+    poe2_layer,
     sym_layer,
     nav_layer,
     num_layer,
@@ -348,6 +366,9 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
         case _POE:
             rgblight_sethsv(HSV_GREEN);
             break;
+        case _POE2:
+            rgblight_sethsv(HSV_SPRINGGREEN);
+            break;
     }
 
     return state;
@@ -360,6 +381,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case _MAC:
         case _WIN:
         case _POE:
+        case _POE2:
         case _COLEMAKDH_MAC:
         case _COLEMAKDH_WIN:
             // Check which base layer is the default
@@ -378,6 +400,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
                     break;
                 case _POE:
                     rgblight_sethsv(HSV_GREEN);
+                    break;
+                case _POE2:
+                    rgblight_sethsv(HSV_SPRINGGREEN);
                     break;
             }
 
