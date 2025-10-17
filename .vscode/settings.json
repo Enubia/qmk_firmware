@@ -1,6 +1,8 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false,
     // Unofficially, QMK uses spaces for indentation
     "editor.insertSpaces": true,
     // Configure glob patterns for excluding files and folders.
