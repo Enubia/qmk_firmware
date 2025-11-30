@@ -24,6 +24,9 @@ enum layer_names {
     _POE,
     _DSP,
     _FFXIV,
+    _FFXIV_NUM,
+    _FFXIV_SHIFT_NUM,
+    _FFXIV_FUNCTION,
     _SYMBOL,
     _NAVIGATION,
     _NUMBERS,
@@ -86,7 +89,9 @@ enum thumb_cluster_mods {
 };
 
 enum ffxiv_cluster_mods {
-
+    SPC_FNUM = LT(_FFXIV_NUM, KC_SPACE),
+    ESC_FSNUM = LT(_FFXIV_SHIFT_NUM, KC_ESC),
+    INT_FNC = LT(_FUNCTION, KC_F22),
 };
 
 enum shifted_keys {
@@ -225,7 +230,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_POE] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   DSP  ,   XXXXXXX , _______, _______, _______, _______, _______, _______,
+            KC_GRV ,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,   DSP  ,    FFXIV  , _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_ESC ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   WIN  ,     WIN   , _______, _______, _______, _______, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -237,7 +242,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_DSP] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            AMPER  ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,  FFXIV ,   XXXXXXX ,  KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
+            AMPER  ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,  FFXIV ,    FFXIV  ,  KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_ESC ,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,   WIN  ,     WIN   ,  KC_H  ,  KC_J ,   KC_K  ,  KC_L  ,KC_SEMICOLON, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -249,17 +254,53 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_FFXIV] = LAYOUT_split_3x6_3_ex2(
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            AMPER  ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,   XXXXXXX ,  KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
+            AMPER  ,  KC_Q  ,  KC_W  ,  KC_E  ,  KC_R  ,  KC_T  ,   POE  ,     DSP   ,  KC_Y  ,  KC_U  ,  KC_I  ,  KC_O  ,  KC_P  , KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            KC_ESC ,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,   WIN  ,     WIN   ,  KC_H  ,  KC_J ,   KC_K  ,  KC_L  ,KC_SEMICOLON, KC_QUOT,
+            KC_TAB ,  KC_A  ,  KC_S  ,  KC_D  ,  KC_F  ,  KC_G  ,   WIN  ,     WIN   ,  KC_H  ,  KC_J ,   KC_K  ,  KC_L  ,KC_SEMICOLON, KC_QUOT,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             KC_LSFT,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_B  ,                       KC_N  ,  KC_M  , KC_COMM, KC_DOT ,KC_SLASH, RE_SHFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                XXXXXXX, XXXXXXX,KC_SPACE,    ENT_SYM, SPC_NUM, DEL_FUN
+                                              ESC_FSNUM,SPC_FNUM, INT_FNC,    ENT_SYM, SPC_NUM, DEL_FUN
         //                                    |--------+--------+--------|  |--------+--------+--------|
     ),
 
     // thumb cluster mods for ffxiv
+
+    [_FFXIV_NUM] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,  KC_9  ,  KC_0  ,KC_MINUS,KC_EQUAL, _______, XXXXXXX,   XXXXXXX , _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,  KC_5  ,  KC_6  ,  KC_7  ,  KC_8  , _______, XXXXXXX,   XXXXXXX , _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,  KC_1  ,  KC_2  ,  KC_3  ,  KC_4  , _______,                      _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                _______, _______, _______,    _______, _______, _______
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
+
+    [_FFXIV_SHIFT_NUM] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,S(KC_9),S(KC_0),S(KC_MINUS),S(KC_EQUAL), _______, XXXXXXX,   XXXXXXX , _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,S(KC_5) , S(KC_6), S(KC_7), S(KC_8), _______, XXXXXXX,   XXXXXXX , _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,S(KC_1) , S(KC_2), S(KC_3), S(KC_4), _______,                      _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                _______, _______, _______,    _______, _______, _______
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
+
+    [_FFXIV_FUNCTION] = LAYOUT_split_3x6_3_ex2(
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,  KC_F9 , KC_F10 , KC_F11 , KC_F12 , _______, XXXXXXX,   XXXXXXX , _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,  KC_F5 , KC_F6  ,  KC_F7 , KC_F8  , _______, XXXXXXX,   XXXXXXX , _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+            _______,  KC_F1 ,  KC_F2 ,  KC_F3 , KC_F4  , _______,                      _______, _______, _______, _______, _______, _______,
+        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                _______, _______, _______,    _______, _______, _______
+        //                                    |--------+--------+--------|  |--------+--------+--------|
+    ),
 };
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
@@ -277,6 +318,28 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM;
     }
 }
+
+// |RGB                  |HSV                  |
+// |---------------------|---------------------|
+// |`RGB_AZURE`          |`HSV_AZURE`          |
+// |`RGB_BLACK`/`RGB_OFF`|`HSV_BLACK`/`HSV_OFF`|
+// |`RGB_BLUE`           |`HSV_BLUE`           |
+// |`RGB_CHARTREUSE`     |`HSV_CHARTREUSE`     |
+// |`RGB_CORAL`          |`HSV_CORAL`          |
+// |`RGB_CYAN`           |`HSV_CYAN`           |
+// |`RGB_GOLD`           |`HSV_GOLD`           |
+// |`RGB_GOLDENROD`      |`HSV_GOLDENROD`      |
+// |`RGB_GREEN`          |`HSV_GREEN`          |
+// |`RGB_MAGENTA`        |`HSV_MAGENTA`        |
+// |`RGB_ORANGE`         |`HSV_ORANGE`         |
+// |`RGB_PINK`           |`HSV_PINK`           |
+// |`RGB_PURPLE`         |`HSV_PURPLE`         |
+// |`RGB_RED`            |`HSV_RED`            |
+// |`RGB_SPRINGGREEN`    |`HSV_SPRINGGREEN`    |
+// |`RGB_TEAL`           |`HSV_TEAL`           |
+// |`RGB_TURQUOISE`      |`HSV_TURQUOISE`      |
+// |`RGB_WHITE`          |`HSV_WHITE`          |
+// |`RGB_YELLOW`         |`HSV_YELLOW`         |
 
 const rgblight_segment_t PROGMEM mac_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_BLUE}
@@ -308,6 +371,15 @@ const rgblight_segment_t PROGMEM media_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t PROGMEM fun_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, RGBLIGHT_LED_COUNT, HSV_MAGENTA}
 );
+const rgblight_segment_t PROGMEM ffxiv_num_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLIGHT_LED_COUNT, HSV_TEAL}
+);
+const rgblight_segment_t PROGMEM ffxiv_shift_num_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLIGHT_LED_COUNT, HSV_TEAL}
+);
+const rgblight_segment_t PROGMEM ffxiv_function_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLIGHT_LED_COUNT, HSV_TEAL}
+);
 
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     mac_layer,
@@ -324,6 +396,9 @@ const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     ffxiv_layer,
 
     // cluster for games
+    ffxiv_num_layer,
+    ffxiv_shift_num_layer,
+    ffxiv_function_layer
 );
 
 const uint16_t PROGMEM comma_dot_combo[] = {KC_COMM, KC_DOT, COMBO_END};
@@ -404,6 +479,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             break;
         case _FUNCTION:
             rgblight_sethsv(HSV_MAGENTA);
+            break;
+        case _FFXIV_FUNCTION:
+        case _FFXIV_NUM:
+        case _FFXIV_SHIFT_NUM:
+            rgblight_sethsv(HSV_TEAL);
             break;
     };
 
